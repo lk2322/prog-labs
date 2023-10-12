@@ -19,6 +19,7 @@ class SudokuTestCase(unittest.TestCase):
     def test_get_block(self):
         grid = sudoku.read_sudoku('puzzle1.txt')
         self.assertEqual(sudoku.get_block(grid, (0, 0)), ['5', '3', '.', '6', '.', '.', '.', '9', '8'])
+        self.assertEqual(sudoku.get_block(grid, (0, 4)), ['.', '7', '.', '1', '9', '5', '.', '.', '.'])
         self.assertEqual(sudoku.get_block(grid, (4, 0)), ['8', '.', '.', '4', '.', '.', '7', '.', '.'])
         self.assertEqual(sudoku.get_block(grid, (8, 0)), ['.', '6', '.', '.', '.', '.', '.', '.', '.'])
 

@@ -78,4 +78,28 @@ class SudokuTestCase(unittest.TestCase):
         grid[0][0] = '3'
         self.assertFalse(sudoku.check_solution(grid))
 
+    def test_generate_sudoku(self):
+        grid = sudoku.generate_sudoku(40)
+        expected_unknown = 41
+        actual_unknown = sum(1 for row in grid for e in row if e == ".")
+        self.assertEqual(expected_unknown, actual_unknown)
+        solution = sudoku.solve(grid)
+        solved = sudoku.check_solution(solution)
+        self.assertTrue(solved)
+
+        grid = sudoku.generate_sudoku(1000)
+        expected_unknown = 0
+        actual_unknown = sum(1 for row in grid for e in row if e == ".")
+        self.assertEqual(expected_unknown, actual_unknown)
+        solution = sudoku.solve(grid)
+        solved = sudoku.check_solution(solution)
+        self.assertTrue(solved)
+
+        grid = sudoku.generate_sudoku(0)
+        expected_unknown = 81
+        actual_unknown = sum(1 for row in grid for e in row if e == ".")
+        self.assertEqual(expected_unknown, actual_unknown)
+        solution = sudoku.solve(grid)
+        solved = sudoku.check_solution(solution)
+        self.assertTrue(solved)
 

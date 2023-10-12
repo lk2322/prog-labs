@@ -168,7 +168,7 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     grid = [['.' for _ in range(9)] for _ in range(9)]
     solve(grid)
     N = 81 - N
-    while N != 0:
+    while N > 0:
         i = random.randint(0, 8)
         j = random.randint(0, 8)
         if grid[i][j] != '.':

@@ -1,17 +1,27 @@
 import unittest
-from io import StringIO
 from unittest.mock import patch
+from io import StringIO
+from src.lab4.survey import AgeGroupClassifier
 
-age_groups = [18, 30, 40]
-input_data = ["John,25", "Alice,32", "Bob,19", "END"]
-expected_output = ['31-40: Alice (32)', '19-30: John (25), Bob (19)']
+class TestAgeGroupClassifier(unittest.TestCase):
+    def setUp(self):
+        self.age_groups = [18, 25, 35, 50]
+        self.classifier = AgeGroupClassifier(self.age_groups)
 
+    @patch("builtins.input", side_effect=["John,22", "Sara,40", "END"])
+    def test_process_input(self, mock_input):
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.classifier.process_input("John", 22)
+            self.classifier.process_input("Sara", 40)
+            self.classifier.display_results()
+            output = mock_stdout.getvalue().strip()
 
-class TestAgeGroupSorting(unittest.TestCase):
-
-    @patch("builtins.input", side_effect=[" ".join(map(str, age_groups))] + input_data)
-    @patch("sys.stdout", new_callable=StringIO)
-    def test_age_group_sorting(self, mock_stdout, mock_input):
-        import src.lab4.survey
-        output = mock_stdout.getvalue().strip().split("\n")
+        expected_output = "36-50: Sara (40)\n19-25: John (22)"
         self.assertEqual(output, expected_output)
+
+    def test_classify_age_group(self):
+        self.assertEqual(self.classifier.classify_age_group(20), '19-25')
+        self.assertEqual(self.classifier.classify_age_group(40), '36-50')
+
+if __name__ == '__main__':
+    unittest.main()
